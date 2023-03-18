@@ -3,7 +3,8 @@
 -- into the tables we created.
 
 -- DROP DATABASE IF EXISTS soccerdb;
--- USE DATABASE soccerdb; 
+-- CREATE DATABASE soccerdb;
+-- USE soccerdb; 
 -- source setup-soccer.sql;
 -- source load-soccer.sql;
 

@@ -37,6 +37,7 @@ CREATE TABLE games(
 
     -- Goals scored by the away team at full time
     ft_away_goals INT NOT NULL,
+
     -- Goals scored by the home team at half time 
     ht_home_goals INT NOT NULL,  
 
@@ -53,10 +54,10 @@ CREATE TABLE games(
     -- Fouls committed by the away team 
     away_fouls_committed INT NOT NULL,
 
-    -- Corners taken by the home team
+    -- Corner kicks taken by the home team
     home_corners INT NOT NULL,
 
-    -- Corners taken by the away team
+    -- Corner kicks taken by the away team
     away_corners INT NOT NULL,
 
     home_yellow_cards INT NOT NULL,
@@ -69,7 +70,7 @@ CREATE TABLE games(
                 ON DELETE CASCADE,
     FOREIGN KEY(away_id) REFERENCES teams(team_id) ON UPDATE CASCADE
                 ON DELETE CASCADE,
-    CHECK (ht_home_goals >= 0 AND ht_away_goals >= 0 AND ft_home_goals >= 0 AND 
+    CHECK (ht_home_goals >= 0 AND ht_away_goals >= 0 AND ft_home_goals >= 0 AND
             ft_away_goals >= 0),
     CHECK ( home_fouls_committed >= 0 AND away_fouls_committed >= 0),
     CHECK (home_yellow_cards >= 0 AND away_yellow_cards >= 0 AND 
