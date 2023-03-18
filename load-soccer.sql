@@ -2,6 +2,7 @@
 -- This script will load the 3 CSV files broken down from our 
 -- into the tables we created.
 
+-- DROP DATABASE IF EXISTS soccerdb;
 -- USE DATABASE soccerdb; 
 -- source setup-soccer.sql;
 -- source load-soccer.sql;
