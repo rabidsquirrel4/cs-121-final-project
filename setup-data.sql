@@ -80,8 +80,8 @@ CREATE TABLE odds(
     away_win NUMERIC(2,2) NOT NULL,
     `goals_over_2.5` NUMERIC(2,2) NOT NULL,
     `goals_under_2.5` NUMERIC(2,2) NOT NULL,
-
-    PRIMARY KEY(game_id),
+    # change primary key to be both website_name and game_id
+    PRIMARY KEY(website_name, game_id),
     FOREIGN KEY(game_id) REFERENCES games(game_id) ON UPDATE CASCADE 
                 ON DELETE CASCADE,
     CHECK (home_win > 0 AND draw > 0 AND away_win > 0),
@@ -108,6 +108,7 @@ CREATE TABLE bets(
     client_id INT NOT NULL,
     type_id INT NOT NULL,
     amount_placed NUMERIC(10, 2) NOT NULL,
+    # is is_correct uniquely idenfified by game_id and type_id? -> both not in a candidate key
     is_correct BOOLEAN NOT NULL,
 
     PRIMARY KEY(bet_id),
