@@ -1,3 +1,11 @@
+README
+
+STUDENT NAMES 
+Leo Afriyie-Buabeng,    Rachel Shi
+
+STUDENT EMAILS
+lafriyie@caltech.edu,   rshi@caltech.edu
+
 INTRODUCTION
 The goal of this project is to create an app where users will be able to look 
 at historical soccer data to make an informed bet and allowing them to make said bet. 
