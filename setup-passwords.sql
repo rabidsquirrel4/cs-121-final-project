@@ -76,9 +76,42 @@ DELIMITER !
 CREATE FUNCTION authenticate(username VARCHAR(20), password VARCHAR(20))
 RETURNS TINYINT DETERMINISTIC
 BEGIN
+    -- Stores the count of how many usernames match the username argument to 
+    -- this function, should be 0 or 1
+    DECLARE user_exists INT;
+    DECLARE salt CHAR(8);
+    DECLARE salted_password CHAR(28);
+    -- Stores the hash of the password that was given to this function
+    DECLARE password_hash BINARY(64);
+    -- Stores the hash that is stored in the database
+    DECLARE correct_hash BINARY(64);
+
     -- check that username actually appears in the user_info table
-    RETURN 0;
-    -- 
+    SELECT COUNT(*) INTO user_exists 
+        FROM user_info 
+        WHERE user_info.username = username;
+    -- If the username does not exist, return 0
+    IF user_exists = 0
+        THEN RETURN 0;
+    END IF;
+
+    /* check if hash matches what is stored in database (user_info table) */
+    -- select user's salt and password hash to compare to from table
+    SELECT user_info.salt, user_info.password_hash INTO salt, correct_hash
+        FROM user_info 
+        WHERE user_info.username = username;
+    
+    -- concatenated to get salted password
+    SET salted_password = CONCAT(salt, password);
+
+    -- use SHA-2 function to generate hash from salted password concatenation
+    SELECT SHA2(salted_password, 256) AS password_hash INTO password_hash;
+    
+    -- check if hash of given password matches what is in the database
+    IF password_hash = correct_hash
+        THEN RETURN 1;
+    ELSE RETURN 0;
+    END IF;
 END !
 DELIMITER ;
 
