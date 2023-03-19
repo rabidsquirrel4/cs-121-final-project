@@ -3,8 +3,7 @@
 -- (Provided) This function generates a specified number of characters for using as a
 -- salt in passwords.
 DELIMITER !
-CREATE FUNCTION make_salt(num_chars INT) 
-RETURNS VARCHAR(20) NOT DETERMINISTIC
+CREATE FUNCTION make_salt(num_chars INT) RETURNS VARCHAR(20) NOT DETERMINISTIC
 BEGIN
     DECLARE salt VARCHAR(20) DEFAULT '';
 
@@ -51,12 +50,21 @@ CREATE TABLE user_info (
 DELIMITER !
 CREATE PROCEDURE sp_add_user(new_username VARCHAR(20), password VARCHAR(20))
 BEGIN
+    DECLARE salt CHAR(8);
+    DECLARE salted_password CHAR(28);
+    DECLARE password_hash BINARY(64);
     -- Generate a new salt
-    SELECT make_salt(8) AS salt;
+    SELECT make_salt(8) INTO salt;
+    
+    SET salted_password = CONCAT(salt, password);
+
+    -- use SHA-2 function to generate hash from salted password concatenation
+    SELECT SHA2(salted_password, 256) AS password_hash INTO password_hash;
+    
     -- Add new record to user_info tables with username, salt, and 
     -- salted password
-    SET salt = CONCAT(salt, password);
-    SELECT SHA2(CONCAT(salt, password), 256);
+    INSERT INTO user_info
+        VALUES (new_username, salt, password_hash);
 END !
 DELIMITER ;
 
@@ -68,14 +76,17 @@ DELIMITER !
 CREATE FUNCTION authenticate(username VARCHAR(20), password VARCHAR(20))
 RETURNS TINYINT DETERMINISTIC
 BEGIN
-  -- TODO
+    -- check that username actually appears in the user_info table
+    RETURN 0;
+    -- 
 END !
 DELIMITER ;
 
 -- [Problem 1c]
 -- Add at least two users into your user_info table so that when we run this file,
 -- we will have examples users in the database.
-
+CALL sp_add_user('appadmin','adminpw');
+CALL sp_add_user('appclient','clientpw');
 
 -- [Problem 1d]
 -- Optional: Create a procedure sp_change_password to generate a new salt and change the given
