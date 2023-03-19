@@ -2,12 +2,6 @@
 -- This script will load the 3 CSV files broken down from our 
 -- into the tables we created.
 
-DROP DATABASE IF EXISTS soccerdb;
-CREATE DATABASE soccerdb;
-USE soccerdb; 
-source setup-data.sql;
-
-
 LOAD DATA LOCAL INFILE 'games.csv' INTO TABLE games
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 ROWS;
 

@@ -32,25 +32,34 @@ CREATE TABLE games(
     home_id INT NOT NULL, 
     away_id INT NOT NULL,
 
+    -- Goals scored by the home team at full time
+    ft_home_goals INT NOT NULL,
+
+    -- Goals scored by the away team at full time
+    ft_away_goals INT NOT NULL,
+
     -- Goals scored by the home team at half time 
     ht_home_goals INT NOT NULL,  
 
     -- Goals scored by the away team at half time 
     ht_away_goals INT  NOT NULL,
 
-    -- Goals scored by the home team at full time
-    ft_home_goals INT NOT NULL,
 
-    -- Goals scored by the away team at full time
-    ft_away_goals INT NOT NULL,
     home_shots INT NOT NULL,
     away_shots INT NOT NULL,
-    home_hit_woodwork INT NOT NULL,
-    away_hit_woodwork INT NOT NULL,
+
+    -- Fould committed by the hoome team
     home_fouls_committed INT NOT NULL,
+
+    -- Fouls committed by the away team 
     away_fouls_committed INT NOT NULL,
+
+    -- Corner kicks taken by the home team
     home_corners INT NOT NULL,
+
+    -- Corner kicks taken by the away team
     away_corners INT NOT NULL,
+
     home_yellow_cards INT NOT NULL,
     away_yellow_cards INT NOT NULL,
     home_red_cards INT NOT NULL,
@@ -61,10 +70,9 @@ CREATE TABLE games(
                 ON DELETE CASCADE,
     FOREIGN KEY(away_id) REFERENCES teams(team_id) ON UPDATE CASCADE
                 ON DELETE CASCADE,
-    CHECK (ht_home_goals >= 0 AND ht_away_goals >= 0 AND ft_home_goals >= 0 AND 
+    CHECK (ht_home_goals >= 0 AND ht_away_goals >= 0 AND ft_home_goals >= 0 AND
             ft_away_goals >= 0),
-    CHECK (home_hit_woodwork >= 0 AND away_hit_woodwork >= 0 AND
-           home_fouls_committed >= 0 AND away_fouls_committed >= 0),
+    CHECK ( home_fouls_committed >= 0 AND away_fouls_committed >= 0),
     CHECK (home_yellow_cards >= 0 AND away_yellow_cards >= 0 AND 
             home_red_cards >= 0 AND away_red_cards >= 0),
     CHECK (home_corners >= 0 AND away_corners >= 0)
@@ -80,8 +88,8 @@ CREATE TABLE odds(
     away_win NUMERIC(2,2) NOT NULL,
     `goals_over_2.5` NUMERIC(2,2) NOT NULL,
     `goals_under_2.5` NUMERIC(2,2) NOT NULL,
-    # change primary key to be both website_name and game_id
-    PRIMARY KEY(website_name, game_id),
+
+    PRIMARY KEY(game_id, website_name),
     FOREIGN KEY(game_id) REFERENCES games(game_id) ON UPDATE CASCADE 
                 ON DELETE CASCADE,
     CHECK (home_win > 0 AND draw > 0 AND away_win > 0),
@@ -108,7 +116,6 @@ CREATE TABLE bets(
     client_id INT NOT NULL,
     type_id INT NOT NULL,
     amount_placed NUMERIC(10, 2) NOT NULL,
-    # is is_correct uniquely idenfified by game_id and type_id? -> both not in a candidate key
     is_correct BOOLEAN NOT NULL,
 
     PRIMARY KEY(bet_id),

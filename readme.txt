@@ -20,6 +20,16 @@ We also wanted to have a an admin-client based app where admin can manage accoun
 SOURCE
 We took our data from the site : https://www.football-data.co.uk/spainm.php. 
 
+LOADING DATA FROM THE COMMAND LINE
+
+        DROP DATABASE IF EXISTS soccerdb;
+        CREATE DATABASE soccerdb;
+        USE soccerdb; 
+        source setup-data.sql;
+
+#include setup-password, setup routines 
+# login info 
+
 DATA CLEANING AND PROJECT SCOPING
 The original data contained the following columns with the explained keys:
 
@@ -211,12 +221,12 @@ DDL CREATION
 We created 6 tables to effectively handle all necessary functions and procedures
 as well as storing the necessary information we needed. The tables we created are as follows:
 
-Bets 
-Odds
-Games
-Teams
-Client
-Bet_types
+bets 
+odds
+games
+teams
+client
+bet_types
 
 
 
