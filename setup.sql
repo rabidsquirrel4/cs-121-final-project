@@ -134,6 +134,7 @@ CREATE TABLE bets(
     game_id INT NOT NULL,
     client_id INT NOT NULL,
     type_id INT NOT NULL,
+    -- We limit dollar amounts for bets placed to be under $100,000,000.00 (USD)
     amount_placed NUMERIC(10, 2) NOT NULL,
     -- whether the bet placed is correct or not, may be NULL if tne game hasn't 
     -- hasn't already happened.
