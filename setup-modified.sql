@@ -82,16 +82,16 @@ CREATE TABLE games(
     -- has not happened yet, they should all be NULL)
     -- If the attribute is NULL, the other statment in the OR statement should
     -- not run, since we already know the whole statement is true
-    CHECK (ht_home_goals IS NULL) OR
+    CHECK ((ht_home_goals IS NULL) OR
             (ht_home_goals >= 0 AND ht_away_goals >= 0 AND ft_home_goals 
-            >= 0 AND ft_away_goals >= 0),
-    CHECK (home_fouls_committed IS NULL) OR 
-            (home_fouls_committed >= 0 AND away_fouls_committed >= 0),
-    CHECK (home_yellow_cards IS NULL) OR
+            >= 0 AND ft_away_goals >= 0)),
+    CHECK ((home_fouls_committed IS NULL) OR 
+            (home_fouls_committed >= 0 AND away_fouls_committed >= 0)),
+    CHECK ((home_yellow_cards IS NULL) OR
             (home_yellow_cards >= 0 AND away_yellow_cards >= 0 AND 
-            home_red_cards >= 0 AND away_red_cards >= 0),
-    CHECK (home_corners IS NULL) OR
-            (home_corners >= 0 AND away_corners >= 0)
+            home_red_cards >= 0 AND away_red_cards >= 0)),
+    CHECK ((home_corners IS NULL) OR
+            (home_corners >= 0 AND away_corners >= 0))
 );
 
 
@@ -99,17 +99,20 @@ CREATE TABLE games(
 CREATE TABLE odds(
     website_name VARCHAR(50) NOT NULL,
     game_id INT,
-    home_win NUMERIC(2,2) NOT NULL,
-    draw NUMERIC(2,2) NOT NULL,
-    away_win NUMERIC(2,2) NOT NULL,
-    `goals_over_2.5` NUMERIC(2,2) NOT NULL,
-    `goals_under_2.5` NUMERIC(2,2) NOT NULL,
+    home_win NUMERIC(4,2) NOT NULL,
+    draw NUMERIC(4,2) NOT NULL,
+    away_win NUMERIC(4,2) NOT NULL,
+    -- added DEFAULT value since one row in our imported data were missing these
+    -- values, temp fix
+    `goals_over_2.5` NUMERIC(4,2) NOT NULL DEFAULT 0.0,
+    `goals_under_2.5` NUMERIC(4,2) NOT NULL DEFAULT 0.0,
 
     PRIMARY KEY(game_id, website_name),
     FOREIGN KEY(game_id) REFERENCES games(game_id) ON UPDATE CASCADE 
                 ON DELETE CASCADE,
     CHECK (home_win > 0 AND draw > 0 AND away_win > 0),
-    CHECK (`goals_over_2.5` > 0 AND `goals_under_2.5` > 0)
+    -- temp fix
+    CHECK (`goals_over_2.5` >= 0 AND `goals_under_2.5` >= 0)
 
 );
 
