@@ -1,20 +1,5 @@
 -- File for Password Management section of Final Project
 
-/*
- *
- */
-
--- Defines the table that holds the client's information.
-CREATE TABLE client(
-    client_id INT AUTO_INCREMENT,
-    username VARCHAR(25) UNIQUE NOT NULL,
-    password VARCHAR(25) NOT NULL,
-    is_admin BOOLEAN,
-    PRIMARY KEY(client_id),
-    CHECK (is_admin IN (0,1))
-);
-
-
 -- (Provided) This function generates a specified number of characters for using as a
 -- salt in passwords.
 DELIMITER !
@@ -66,7 +51,12 @@ CREATE TABLE user_info (
 DELIMITER !
 CREATE PROCEDURE sp_add_user(new_username VARCHAR(20), password VARCHAR(20))
 BEGIN
-  -- TODO
+    -- Generate a new salt
+    SELECT make_salt(8) AS salt;
+    -- Add new record to user_info tables with username, salt, and 
+    -- salted password
+    SET salt = CONCAT(salt, password);
+    SELECT SHA2(CONCAT(salt, password), 256);
 END !
 DELIMITER ;
 
