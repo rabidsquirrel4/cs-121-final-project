@@ -27,7 +27,6 @@ The data should be loaded in the following order:
         mysql> DROP DATABASE IF EXISTS soccerdb;
         mysql> CREATE DATABASE soccerdb;
         mysql> USE soccerdb; 
-        mysql> setup-data.sql;
         mysql> source setup.sql;
         mysql> source load-data.sql;
         mysql> source setup-passwords.sql;
