@@ -21,14 +21,147 @@ SOURCE
 We took our data from the site : https://www.football-data.co.uk/spainm.php. 
 
 LOADING DATA FROM THE COMMAND LINE
+The data should be loaded in the following order:
+* This assumes one has mysql already installed and opened and in the same directory as the stored files. 
 
-        DROP DATABASE IF EXISTS soccerdb;
-        CREATE DATABASE soccerdb;
-        USE soccerdb; 
-        source setup-data.sql;
+        mysql> DROP DATABASE IF EXISTS soccerdb;
+        mysql> CREATE DATABASE soccerdb;
+        mysql> USE soccerdb; 
+        mysql> setup-data.sql;
+        mysql> source setup.sql;
+        mysql> source load-data.sql;
+        mysql> source setup-passwords.sql;
+        mysql> source setup-routines.sql;
+        mysql> source grant-permissions.sql;
+        mysql> source queries.sql;
 
-#include setup-password, setup routines 
-# login info 
+
+INSTRUCTIONS FOR PYTHON PROGRAM 
+Please install the Python MySQL Connector using pip3 if not installed already.
+
+After loading the data and verifying you are in the correct database, 
+run the following to open the python application:
+
+mysql> quit;
+
+$ python3 app_client.py
+
+OR
+
+$ python3 app_admin.py
+
+Please log in with the following user/passwords:
+
+For app_client.py, the following customers are registered:
+    USER | PASSWORD
+    mfreeman | mfreemanpw
+    cpratt | cprattpw
+    wferrell | wferrellpw
+    ebanks | ebankspw
+    warnett | warnettpw
+
+For app_admin.py, the following admins are registered:
+    USER | PASSWORD
+    lorem | ipsum
+    tired | student 
+
+Here is a suggested guide to using app_client.py:
+    1.  Select option [a] to learn more about some products.
+    2. Remember a product ID you want to buy!
+    3. Select option [b] to purchase that item.
+    4. Remember your purchase ID.
+    5. Select option [d] to write a review using your purchase ID.
+    6. Select option [c] to request a product.
+
+Here is a suggested guide to using app_admin.py:
+    1. Select option [a] to see which requests are unfulfilled.
+    2. Remember a request ID you want to fulfill.
+    3. Select option [b] to fulfill that request.
+    4. Select option [c] to see how much money you've made!
+
+Files written to user's system:
+- No files are written to the user's system.
+
+Unfinished features:
+- Log appropriate employee ID in log (couldn't figure this one out, so it defaults to lorem).
+- Rigorous checks to validate user input and actions (only basic checks are in place).
+- Getting rid of redundant datasets/cleanup in general.
+- Showing appropriate mySQL errors in the Python interface.
+
+USER INTERFACE 
+
+NAVIGATIONAL STRUCTURE
+
+Key:
+(1) | (#) -- option into deeper level
+(B) | (X) -- option up one level
+(*)       -- jump to specified level
+(_)       -- user data entry
+
+Layers:
+ 0   1   2   3   4   5
+ |   |   |   |   |   |
+(1) Login    |   |   |
+    (_) Username |   |
+    (_) Password |   |
+    (0) Admin tools  |
+        (1) Superuser account
+            (#) Choose user
+                (*) Return to layer 1 as admin'd user
+        (2) Modify user
+            (1) Add user
+                (_) New username
+                (_) New password
+                (_) Admin status
+            (2) Remove user
+            (3) Change privileges
+            (B) Back
+        (3) Export logs
+            (_) Export filename target
+        (B) Back
+    (1) Log existing activity
+        (#) Choose category
+            (#) Choose activity
+                (#) Choose time format
+                (B) Back
+            (B) Back
+        (B) Back
+    (2) View logged data
+        (1) ??
+    (3) View reports
+        (1) Sleep statistics
+            (1) Bedtime
+            (2) Wake time
+            (3) Sleep duration
+            (4) Sleep goals
+            (B) Back
+        (2) Activity tracking
+            (1) Specific activity
+                (#) Choose activity
+                    (1) Dates of interest
+                    (2) Averages
+                    (3) Goals
+                    (B) Back
+                (B) Back
+            (2) Category aggregates
+                (#) Choose category
+                    (1) Dates of interest
+                    (2) Averages
+                    (B) Back
+                (B) Back
+            (B) Back
+        (B) Back
+    (4) View logging options
+    (5) Add new activity
+        (#) Choose category
+            (_) Activity name
+            (_) Logging symbol
+            (_) Optional description
+            (_) Optional goal time
+            (*) Return to layer 1 as same user
+    (X) Logout
+(X) Exit
+
 
 DATA CLEANING AND PROJECT SCOPING
 The original data contained the following columns with the explained keys:
@@ -232,30 +365,30 @@ bet_types
 
 FUNCTIONS AND PROCEDURES
 We expect to return the following and so will implement functions that do so:
-Return the earnings a person has accumulated (total_earnings)
-Return the earnings from a single bet (get_payout)
-Return all the bets a client has made (show_client_history)
-Returns games specific to teams before a given date(show_team_history)
-Returns all the goals in a given time period(get_goals)
-Returns all the odds for a given team or game (get_odds)
+* Return the earnings a person has accumulated (total_earnings)
+* Return the earnings from a single bet (get_payout)
+* Return all the bets a client has made (show_client_history)
+* Returns games specific to teams before a given date(show_team_history)
+* Returns all the goals in a given time period(get_goals)
+* Returns all the odds for a given team or game (get_odds)
 
 We expect to make the following and so will implement procedures that do so:
-Keep track of the clients in our database ( add_client(client_id, is_admin, username, password))
-Keep track of bets in our database ( add_new_bet(bet_id, game_id, client_id, bet_type, amount_placed, is_correct))
-Keep track of games and their odds (add_game())
-Teams come and go and we would want to keep track of that(update_teams())
-
-
-
-
-EXPECTED UI 
+* Keep track of the clients in our database ( add_client(client_id, is_admin, username, password))
+* Keep track of bets in our database ( add_new_bet(bet_id, game_id, client_id, bet_type, amount_placed, is_correct))
+* Keep track of games and their odds (add_game())
+* Teams come and go and we would want to keep track of that(update_teams())
 
 
 
 ROADBLOCKS
+* 
 
 
-
-
-STRETCH GOALS 
+STRETCH GOALS FOR FUTURE IMPROVEMENT 
 Changing the DDL to make the data season-specific 
+Adding more league stats from leagues all over the world (only have la liga)
+Adding stats from international games (friendlies and tournaments)
+Adding player-specific data
+Adding more betting data from more sites
+Providing simulations for players who want to experience betting without using their own money. 
+
