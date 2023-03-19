@@ -118,8 +118,9 @@ DELIMITER ;
 -- [Problem 1c]
 -- Add at least two users into your user_info table so that when we run this file,
 -- we will have examples users in the database.
-CALL sp_add_user('appadmin','adminpw');
-CALL sp_add_user('appclient','clientpw');
+CALL sp_add_user('sbf','bahamas');
+CALL sp_add_user('kenneth','naturalgas');
+CALL sp_add_user('wsbadmin','tothemoon');
 
 -- [Problem 1d]
 -- Optional: Create a procedure sp_change_password to generate a new salt and change the given
