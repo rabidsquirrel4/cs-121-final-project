@@ -220,9 +220,6 @@ Bet_types
 
 
 
-
-
-
 FUNCTIONS AND PROCEDURES
 We expect to return the following and so will implement functions that do so:
 Return the earnings a person has accumulated (total_earnings)
