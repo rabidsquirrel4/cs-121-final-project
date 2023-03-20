@@ -10,6 +10,11 @@ SELECT authenticate('appadmin','adminpw');
 SELECT COUNT(*) FROM user_info WHERE user_info.username = 'appadmin';
 SELECT user_info.salt FROM user_info WHERE user_info.username = 'appadmin';
 
+-- test grant-permissions.sql
+DROP USER 'leoadmin'@'localhost';
+DROP USER 'racheladmin'@'localhost';
+DROP USER 'appclient'@'localhost';
+
 -- test queries.sql
 
 -- test setup-routines.sql
