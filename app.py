@@ -14,22 +14,22 @@ import mysql.connector.errorcode as errorcode
 # to an actual client. Set to False when done testing.
 DEBUG = True
 
-def main():
-    show_options()
-
 def show_options():
     print("Welcome to Leo and Rachel's Football(Soccer) Bet Application.")
-    print("What would you like to do? ")
-    print("     (b)et on a game")
-    print("     (l)ook something up")
-    print("     (q)uit")
-    option = input("Enter an option: ").lower()
-    if option == 'b':
-        make_bet()
-    elif option == 'l':
-        lookup_stat()
-    else:
-        print('Please enter a valid option.')
+    while True:
+        print("What would you like to do? ")
+        print("     (b)et on a game")
+        print("     (l)ook something up")
+        print("     (q)uit")
+        option = input("Enter an option: ").lower()
+        if option == 'b':
+            make_bet()
+        elif option == 'l':
+            lookup_stat()
+        elif option == 'q':
+            quit_ui()
+        else:
+            print('Please enter a valid option.')
 
 def make_bet():
     pass
@@ -63,6 +63,14 @@ def get_sum_goals():
             sys.err(err)
             return
 
+def quit_ui():
+    """
+    Quits the program, printing a good bye message to the user.
+    """
+    print('Good bye!')
+    exit()
+
+
 def get_conn():
     """"
     Returns a connected MySQL connector instance, if connection is successful.
@@ -94,6 +102,12 @@ def get_conn():
         else:
             sys.stderr('An error occurred, please contact the administrator.')
         sys.exit(1)
+
+def main():
+    """
+    Main function for starting things up.
+    """
+    show_options()
 
 if __name__ == '__main__':
     main()
