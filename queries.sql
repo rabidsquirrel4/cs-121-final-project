@@ -22,12 +22,12 @@ WHERE games.game_date BETWEEN '2009-01-01' AND '2018-12-31'
   AND t2.team_id = odds.game_id;
 
 -- The top 5 highest scoring games between 2009 and 2019:
-SELECT g.game_id, g.game_date, 
+SELECT games.game_id, games.game_date, 
        CONCAT(t1.team_name, ' vs. ', t2.team_name) AS match, 
        games.ft_home_goals + games.ft_away_goals AS total_goals
 FROM games
-INNER JOIN teams t1 ON g.home_id = t1.team_id
-INNER JOIN teams t2 ON g.away_id = t2.team_id
+INNER JOIN teams t1 ON games.home_id = t1.team_id
+INNER JOIN teams t2 ON games.away_id = t2.team_id
 WHERE games.game_date BETWEEN '2009-01-01' AND '2019-12-31'
 ORDER BY total_goals DESC
 LIMIT 5;

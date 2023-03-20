@@ -104,15 +104,15 @@ CREATE TABLE odds(
     away_win NUMERIC(4,2) NOT NULL,
     -- added DEFAULT value since one row in our imported data were missing these
     -- values, temp fix
-    `goals_over_2.5` NUMERIC(4,2) NOT NULL DEFAULT 0.0,
-    `goals_under_2.5` NUMERIC(4,2) NOT NULL DEFAULT 0.0,
+    `goals_over_2_5` NUMERIC(4,2) NOT NULL DEFAULT 0.0,
+    `goals_under_2_5` NUMERIC(4,2) NOT NULL DEFAULT 0.0,
 
     PRIMARY KEY(game_id, website_name),
     FOREIGN KEY(game_id) REFERENCES games(game_id) ON UPDATE CASCADE 
                 ON DELETE CASCADE,
     CHECK (home_win > 0 AND draw > 0 AND away_win > 0),
     -- temp fix
-    CHECK (`goals_over_2.5` >= 0 AND `goals_under_2.5` >= 0)
+    CHECK (`goals_over_2_5` >= 0 AND `goals_under_2_5` >= 0)
 
 );
 
