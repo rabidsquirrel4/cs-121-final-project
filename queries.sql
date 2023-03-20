@@ -23,7 +23,7 @@ WHERE games.game_date BETWEEN '2009-01-01' AND '2018-12-31'
 
 -- The top 5 highest scoring games between 2009 and 2019:
 SELECT games.game_id, games.game_date, 
-       CONCAT(t1.team_name, ' vs. ', t2.team_name) AS match, 
+       t1.team_name || ' vs. ' || t2.team_name AS match, 
        games.ft_home_goals + games.ft_away_goals AS total_goals
 FROM games
 INNER JOIN teams t1 ON games.home_id = t1.team_id
@@ -36,25 +36,25 @@ LIMIT 5;
 -- (games that had higher odds for over goals > 2.5):
 SELECT games.game_id, games.game_date, 
        CONCAT(t1.team_name, ' vs. ', t2.team_name) AS match, 
-       odds.goals_over_2.5, odds.goals_under_2.5, 
+       odds.goals_over_2_5, odds.goals_under_2_5, 
        games.ft_home_goals + games.ft_away_goals AS total_goals,
        CASE 
-         WHEN games.ft_home_goals + games.ft_away_goals > odds.goals_over_2.5
+         WHEN games.ft_home_goals + games.ft_away_goals > odds.goals_over_2_5
             THEN 'over'
-         WHEN games.ft_home_goals + games.ft_away_goals < odds.goals_under_2.5 
+         WHEN games.ft_home_goals + games.ft_away_goals < odds.goals_under_2_5 
             THEN 'under'
          ELSE 'push'
        END AS bet_result,
-       ABS(games.ft_home_goals + games.ft_away_goals - odds.goals_over_2.5) 
+       ABS(games.ft_home_goals + games.ft_away_goals - odds.goals_over_2_5) 
             AS over_diff,
-       ABS(games.ft_home_goals + games.ft_away_goals - odds.goals_under_2.5) 
+       ABS(games.ft_home_goals + games.ft_away_goals - odds.goals_under_2_5) 
             AS under_diff
 FROM games 
-INNER JOIN odds ON g.game_id = odds.game_id
+INNER JOIN odds ON games.game_id = odds.game_id
 INNER JOIN teams t1 ON games.home_id = t1.team_id
-INNER JOIN teams t2 ON g.away_id = t2.team_id
-WHERE g.game_date BETWEEN '2019-01-01' AND '2022-12-31' 
-AND o.website_name = 'BetBrain'
+INNER JOIN teams t2 ON games.away_id = t2.team_id
+WHERE games.game_date BETWEEN '2019-01-01' AND '2022-12-31' 
+AND odds.website_name = 'BetBrain'
 ORDER BY GREATEST(over_diff, under_diff) DESC
 LIMIT 5;
 

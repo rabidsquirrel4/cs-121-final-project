@@ -81,11 +81,6 @@ Here is a suggested guide to using app_admin.py:
 Files written to user's system:
 - No files are written to the user's system.
 
-Unfinished features:
-- Log appropriate employee ID in log (couldn't figure this one out, so it defaults to lorem).
-- Rigorous checks to validate user input and actions (only basic checks are in place).
-- Getting rid of redundant datasets/cleanup in general.
-- Showing appropriate mySQL errors in the Python interface.
 
 USER INTERFACE 
 
@@ -380,7 +375,36 @@ We expect to make the following and so will implement procedures that do so:
 
 
 ROADBLOCKS
-* 
+* We had some difficulties with the ER-Diagrams in Part A since one of our tables had two IDs that were both foreign keys referencing the same primary key in another table. This was something that we didn’t encounter in Assignment 6 and caused us a lot of confusion when we initially tried to design our ER-Diagrams. We ended up having to ask about it during office hours, and changed the ER Diagrams based on El’s suggestions.
+We wrote our DDL before doing the functional dependency analysis in Part C and we wanted to change our DDL based on the analysis in Part C. However, this involved a lot of rethinking the check constraints we had as well as rewriting to allow NULL in a bunch of the attributes in different tables, which was a much larger change than we originally thought.
+
+* We tried to write a query for -- The most underperforming games according to odds 
+games that had higher odds for over goals > 2.5 for our final query:
+
+
+SELECT games.game_id, games.game_date, 
+       t1.team_name || vs ||t2.team_name AS match, 
+       odds.goals_over_2_5, odds.goals_under_2_5, 
+       games.ft_home_goals + games.ft_away_goals AS total_goals,
+       CASE 
+         WHEN games.ft_home_goals + games.ft_away_goals > odds.goals_over_2_5
+            THEN 'over'
+         WHEN games.ft_home_goals + games.ft_away_goals < odds.goals_under_2_5 
+            THEN 'under'
+         ELSE 'push'
+       END AS bet_result,
+       ABS(games.ft_home_goals + games.ft_away_goals - odds.goals_over_2_5) 
+            AS over_diff,
+       ABS(games.ft_home_goals + games.ft_away_goals - odds.goals_under_2_5) 
+            AS under_diff
+FROM games 
+INNER JOIN odds ON games.game_id = odds.game_id
+INNER JOIN teams t1 ON games.home_id = t1.team_id
+INNER JOIN teams t2 ON games.away_id = t2.team_id
+WHERE games.game_date BETWEEN '2019-01-01' AND '2022-12-31' 
+AND odds.website_name = 'BetBrain'
+ORDER BY GREATEST(over_diff, under_diff) DESC
+LIMIT 5;
 
 
 STRETCH GOALS FOR FUTURE IMPROVEMENT 
