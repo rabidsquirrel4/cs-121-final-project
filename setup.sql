@@ -11,7 +11,7 @@ CREATE TABLE client(
     client_id INT AUTO_INCREMENT,
     -- Usernames are up to 20 characters, the same as in setup-passwords.sql
     username VARCHAR(20) UNIQUE NOT NULL,
-    is_admin BOOLEAN,
+    is_admin BOOLEAN NOT NULL,
     PRIMARY KEY(client_id),
     CHECK (is_admin IN (0,1))
 );

@@ -21,3 +21,19 @@ source setup-routines.sql
 SELECT show_outcome(6);
 SELECT * FROM games WHERE games.game_id = 6;
 SELECT * FROM teams;
+SELECT calc_earnings(1);
+CALL sp_place_bet(1, 1, 0, 16.00);
+
+UPDATE bets SET is_correct = 0
+        WHERE bets.type_id IN (SELECT type_id FROM bet_types 
+            WHERE type_name LIKE 'away%');
+
+SELECT COUNT(*) FROM bet_types 
+            WHERE type_id = 1 AND 
+                    type_name LIKE 'home%';
+
+-- should result in home win rows being changed
+UPDATE games SET
+            ft_home_goals = 1,
+            ft_away_goals = 0
+        WHERE game_id = 1; 
