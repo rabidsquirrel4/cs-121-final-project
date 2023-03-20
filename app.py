@@ -12,16 +12,19 @@ import mysql.connector.errorcode as errorcode
 
 # Debugging flag to print errors when debugging that shouldn't be visible
 # to an actual client. Set to False when done testing.
-DEBUG = True
+DEBUG = False
 
 def show_options():
     print("Welcome to Leo and Rachel's Football(Soccer) Bet Application.")
     while True:
         print("What would you like to do? ")
+        print("     (u)ser login")
         print("     (b)et on a game")
         print("     (l)ook something up")
         print("     (q)uit")
         option = input("Enter an option: ").lower()
+        if option == 'u':
+            user_login()
         if option == 'b':
             make_bet()
         elif option == 'l':
@@ -31,33 +34,130 @@ def show_options():
         else:
             print('Please enter a valid option.')
 
-def make_bet():
-    pass
-
-def lookup_stat():
-    team_name = input("Please enter the team you would like to look up stats" +
-                      " for:")
-    sql = """
-    SELECT * 
-    FROM games
-    WHERE home_id LIKE '%s'
-    """ % team_name
-
-def get_is_active():
-    pass
-
-def get_average_odds():
-    pass    
-
-def get_sum_goals():
-    print('Sum of goals: ')
-    # select database first
-    sql = 'SELECT * FROM client;'
+def user_login():
+    username = input("Please enter your username: ")
+    password = input("Please enter your password: ")
+    sql = "SELECT authenticate('%s', '%s');" % (username, password)
     try:
         cursor = conn.cursor()
         cursor.execute(sql)
-        row = cursor.fetchone()
+        successful = cursor.fetchone()[0]
+        if DEBUG:
+            print(successful)
+        if successful == 1:
+            print("Successfully logged in!")
+        else:
+            print("Please try logging in again.")
+    except Exception as err:
+        if DEBUG:
+            sys.err(err)
+            return
+
+def make_bet():
+    game_id = input("Please enter your the Game ID of the game " + 
+                     "you would like to make a bet on: ")
+    client_id = input("Please enter the ID of the client making the bet : ")
+    type_id = input("Please enter the ID of the type of bet being placed: ")
+    amount_placed = input("Please enter the amount of the bet: ")
+    sql = """CALL sp_place_bet(%s, %s, %s, %s);
+        """ % (game_id, client_id, type_id, amount_placed)
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql)        
+    except Exception as err:
+        print("Something went wrong with placing the bet, please try again.")
+        if DEBUG:
+            sys.err(err)
+        return
+    print("Bet made successfully!")
+
+def lookup_stat():
+    """Initial interface for user to look up statistics."""
+    print("What would you like look up? ")
+    print("     (a)ctive: look up if team is active")
+    print("     (h)ighest scoring games from 2009 to 2019")
+    print("     (r)eal madrid vs barcelona statistics")
+    print("     (q)uit")
+    option = input("Enter an option: ").lower()
+    if option == 'a':
+        get_is_active()
+    if option == 'h':
+        highest_scoring()
+    elif option == 'r':
+        madrid_vs_barcelona()
+    elif option == 'q':
+        quit_ui()
+    else:
+        print('Please enter a valid option.')
+
+def get_is_active():
+    """ 
+    Let's the user search the database for teams that are active or not.
+    """
+    team_name = input("Please enter the team you would like to look up stats" +
+                      " for:")
+    sql = """
+    SELECT COUNT(*) 
+    FROM teams
+    WHERE team_name LIKE '%s'
+    """ % team_name
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        count = cursor.fetchone()[0]
+        if DEBUG:
+            print(count)
+        if count > 0:
+            print("Yes, " + team_name + " is active!")
+        else:
+            print("No, " + team_name + " is not active.")
+    except Exception as err:
+        if DEBUG:
+            sys.err(err)
+            return
+
+def highest_scoring():
+    sql = """
+    SELECT games.game_id, games.game_date, 
+       t1.team_name || ' vs. ' || t2.team_name AS match, 
+       games.ft_home_goals + games.ft_away_goals AS total_goals
+    FROM games
+    INNER JOIN teams t1 ON games.home_id = t1.team_id
+    INNER JOIN teams t2 ON games.away_id = t2.team_id
+    WHERE games.game_date BETWEEN '2009-01-01' AND '2019-12-31'
+    ORDER BY total_goals DESC
+    LIMIT 5;
+    """
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql)
         rows = cursor.fetchall()
+        if DEBUG:
+            print(rows)
+        print(rows)
+    except Exception as err:
+        if DEBUG:
+            sys.err(err)
+            return
+
+def madrid_vs_barcelona():
+    sql = """
+    SELECT SUM(ft_home_goals + ft_away_goals) AS total_goals
+    FROM games
+    INNER JOIN odds ON games.game_id = odds.game_id
+    INNER JOIN teams t1 ON games.home_id = t1.team_id AND t1.team_name = 'Real Madrid'
+    INNER JOIN teams t2 ON games.away_id = t2.team_id AND t2.team_name = 'Barcelona'
+    WHERE games.game_date BETWEEN '2009-01-01' AND '2018-12-31'
+    AND odds.home_win > odds.away_win
+    AND t1.team_id = odds.game_id;
+    """
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        if DEBUG:
+            print(rows)
+        print(rows)
     except Exception as err:
         if DEBUG:
             sys.err(err)
