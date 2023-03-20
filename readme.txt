@@ -53,108 +53,17 @@ Please log in with the following user/passwords:
 
 For app_client.py, the following customers are registered:
     USER | PASSWORD
-    mfreeman | mfreemanpw
-    cpratt | cprattpw
-    wferrell | wferrellpw
-    ebanks | ebankspw
-    warnett | warnettpw
+    lafriyie | lafriyie
+    rshi | rshi 
 
 For app_admin.py, the following admins are registered:
     USER | PASSWORD
-    lorem | ipsum
-    tired | student 
-
-Here is a suggested guide to using app_client.py:
-    1.  Select option [a] to learn more about some products.
-    2. Remember a product ID you want to buy!
-    3. Select option [b] to purchase that item.
-    4. Remember your purchase ID.
-    5. Select option [d] to write a review using your purchase ID.
-    6. Select option [c] to request a product.
-
-Here is a suggested guide to using app_admin.py:
-    1. Select option [a] to see which requests are unfulfilled.
-    2. Remember a request ID you want to fulfill.
-    3. Select option [b] to fulfill that request.
-    4. Select option [c] to see how much money you've made!
+    lleo | lafriyie
+    rshii | student 
 
 Files written to user's system:
 - No files are written to the user's system.
 
-
-USER INTERFACE 
-
-NAVIGATIONAL STRUCTURE
-
-Key:
-(1) | (#) -- option into deeper level
-(B) | (X) -- option up one level
-(*)       -- jump to specified level
-(_)       -- user data entry
-
-Layers:
- 0   1   2   3   4   5
- |   |   |   |   |   |
-(1) Login    |   |   |
-    (_) Username |   |
-    (_) Password |   |
-    (0) Admin tools  |
-        (1) Superuser account
-            (#) Choose user
-                (*) Return to layer 1 as admin'd user
-        (2) Modify user
-            (1) Add user
-                (_) New username
-                (_) New password
-                (_) Admin status
-            (2) Remove user
-            (3) Change privileges
-            (B) Back
-        (3) Export logs
-            (_) Export filename target
-        (B) Back
-    (1) Log existing activity
-        (#) Choose category
-            (#) Choose activity
-                (#) Choose time format
-                (B) Back
-            (B) Back
-        (B) Back
-    (2) View logged data
-        (1) ??
-    (3) View reports
-        (1) Sleep statistics
-            (1) Bedtime
-            (2) Wake time
-            (3) Sleep duration
-            (4) Sleep goals
-            (B) Back
-        (2) Activity tracking
-            (1) Specific activity
-                (#) Choose activity
-                    (1) Dates of interest
-                    (2) Averages
-                    (3) Goals
-                    (B) Back
-                (B) Back
-            (2) Category aggregates
-                (#) Choose category
-                    (1) Dates of interest
-                    (2) Averages
-                    (B) Back
-                (B) Back
-            (B) Back
-        (B) Back
-    (4) View logging options
-    (5) Add new activity
-        (#) Choose category
-            (_) Activity name
-            (_) Logging symbol
-            (_) Optional description
-            (_) Optional goal time
-            (*) Return to layer 1 as same user
-    (X) Logout
-(X) Exit
 
 
 DATA CLEANING AND PROJECT SCOPING
