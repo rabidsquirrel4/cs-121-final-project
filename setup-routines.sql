@@ -42,10 +42,10 @@ BEGIN
         WHERE teams.team_id = away_id;
 
     SET return_str = CONCAT(CONVERT(home_team_name, CHAR), ' (', CONVERT(ft_home_goals, CHAR),
-        '-', CONVERT(ft_away_goals, CHAR), ')', away_team_name, ': ');
-    /* SET return_str = home_team_name; */
+        '-', CONVERT(ft_away_goals, CHAR), ') ', away_team_name, ': ');
+
     IF ft_home_goals > ft_away_goals
-        THEN RETURN CONVERT(home_team_name, CHAR);-- CONCAT(return_str, 'Home Team ', home_team_name, ' Won');
+        THEN RETURN CONCAT(return_str, 'Home Team ', home_team_name, ' Won');
     ELSEIF ft_home_goals = ft_away_goals
         THEN RETURN CONCAT(return_str, 'Draw');
     ELSE
@@ -56,10 +56,10 @@ END !
 -- A user-defined function that calculates the earnings (or losses if negative)
 -- of a particular client as a numeric value with two decimal places.
 -- Returns 0.00 if client has not placed any bets.
-/* CREATE FUNCTION calc_earnings()
+CREATE FUNCTION calc_earnings()
 BEGIN
     
-END ! */
+END !
 
 DELIMITER ;
 /* 
