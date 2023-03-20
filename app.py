@@ -110,6 +110,6 @@ def main():
     show_options()
 
 if __name__ == '__main__':
-    main()
     # make connection a global variable
     conn = get_conn()
+    main()

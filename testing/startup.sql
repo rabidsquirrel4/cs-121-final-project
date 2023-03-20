@@ -1,7 +1,7 @@
-DROP USER 'leoadmin'@'localhost';
-DROP USER 'racheladmin'@'localhost';
-DROP USER 'appadmin'@'localhost';
-DROP USER 'appclient'@'localhost';
+DROP USER IF EXISTS 'leoadmin'@'localhost';
+DROP USER IF EXISTS 'racheladmin'@'localhost';
+DROP USER IF EXISTS 'appadmin'@'localhost';
+DROP USER IF EXISTS 'appclient'@'localhost';
 DROP DATABASE IF EXISTS soccerdb;
 CREATE DATABASE soccerdb;
 USE soccerdb; 
