@@ -18,14 +18,17 @@ def show_options():
     print("Welcome to Leo and Rachel's Football(Soccer) Bet Application.")
     while True:
         print("What would you like to do? ")
+        print("     (c)reate account")
         print("     (u)ser login")
         print("     (b)et on a game")
         print("     (l)ook something up")
         print("     (q)uit")
         option = input("Enter an option: ").lower()
-        if option == 'u':
+        if option == 'c':
+            create_user()
+        elif option == 'u':
             user_login()
-        if option == 'b':
+        elif option == 'b':
             make_bet()
         elif option == 'l':
             lookup_stat()
@@ -33,6 +36,11 @@ def show_options():
             quit_ui()
         else:
             print('Please enter a valid option.')
+
+def create_user():
+    username = input("Please enter the username you would like to use: ")
+    print("Passwords must be 8-12 characters in length.")
+    password = input("Please enter your password: ")
 
 def user_login():
     username = input("Please enter your username: ")

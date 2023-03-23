@@ -40,7 +40,11 @@ CREATE TABLE user_info (
     -- represented as 2 characters.  Thus, 256 / 8 * 2 = 64.
     -- We can use BINARY or CHAR here; BINARY simply has a different
     -- definition for comparison/sorting than CHAR.
-    password_hash BINARY(64) NOT NULL
+    password_hash BINARY(64) NOT NULL,
+
+    -- Indicates whether user is admin and has admin priviledges
+    is_admin BOOLEAN NOT NULL,
+    CHECK (is_admin IN (0,1))
 );
 
 -- [Problem 1a]
