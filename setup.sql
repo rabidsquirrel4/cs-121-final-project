@@ -12,7 +12,13 @@ CREATE TABLE client(
     -- Usernames are up to 20 characters, the same as in setup-passwords.sql
     username VARCHAR(20) UNIQUE NOT NULL,
     PRIMARY KEY(client_id),
-    CHECK (is_admin IN (0,1))
+    FOREIGN KEY(username) REFERENCES user_info(team_id) 
+        ON UPDATE CASCADE  
+        ON DELETE CASCADE,
+);
+
+CREATE TABLE admin(
+    admin_id INT 
 );
 
 

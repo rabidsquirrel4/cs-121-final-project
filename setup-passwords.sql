@@ -129,3 +129,25 @@ CALL sp_add_user('wsbadmin','tothemoon');
 -- [Problem 1d]
 -- Optional: Create a procedure sp_change_password to generate a new salt and change the given
 -- user's password to the given password (after salting and hashing)
+DELIMITER !
+CREATE PROCEDURE sp_change_password(
+    username VARCHAR(20), 
+    new_password VARCHAR(20))
+BEGIN
+    /* DECLARE salt CHAR(8);
+    DECLARE salted_password CHAR(28);
+    DECLARE password_hash BINARY(64);
+    -- Generate a new salt
+    SELECT make_salt(8) INTO salt;
+    
+    SET salted_password = CONCAT(salt, password);
+
+    -- use SHA-2 function to generate hash from salted password concatenation
+    SELECT SHA2(salted_password, 256) AS password_hash INTO password_hash;
+    
+    -- Add new record to user_info tables with username, salt, and 
+    -- salted password
+    INSERT INTO user_info
+        VALUES (new_username, salt, password_hash); */
+END !
+DELIMITER ;
